@@ -1,0 +1,51 @@
+[project]
+name = "sre-agent"
+version = "0.1.0"
+description = "An agent that watches a Linux server: it detects incidents, diagnoses them with evidence from logs, proposes a fix, applies it only after human approval, then verifies recovery and writes an incident report."
+readme = "README.md"
+authors = [
+    { name = "daffo", email = "115448400+dandeliodon@users.noreply.github.com" }
+]
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+sre-agent = "sre_agent:main"
+
+[build-system]
+requires = ["uv_build>=0.13.1,<0.14.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "mypy>=2.4.1",
+    "pytest>=9.2.0",
+    "ruff>=0.17.3",
+]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes: unused imports, undefined names
+    "I",    # isort: import order
+    "B",    # flake8-bugbear: likely bugs
+    "UP",   # pyupgrade: modern Python syntax
+    "SIM",  # flake8-simplify
+    "S",    # flake8-bandit: security checks
+    "RUF",  # ruff-specific rules
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101"]  # assert is how pytest works
+
+[tool.mypy]
+strict = true
+files = ["src", "tests"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["--strict-markers", "--import-mode=importlib"]
